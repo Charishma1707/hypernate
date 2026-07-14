@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package hu.bme.mit.ftsrg.hypernate.context;
 
+import hu.bme.mit.ftsrg.hypernate.identity.Identity;
 import hu.bme.mit.ftsrg.hypernate.middleware.StubMiddleware;
 import hu.bme.mit.ftsrg.hypernate.middleware.StubMiddlewareChain;
 import hu.bme.mit.ftsrg.hypernate.middleware.notification.HypernateNotification;
@@ -30,11 +31,25 @@ public class HypernateContext extends Context {
 
   @Getter private final Registry registry;
 
+  private Identity identity;
+
   public HypernateContext(final StubMiddlewareChain middlewareChain) {
     super(middlewareChain.getFirst());
     this.middlewareChain = middlewareChain;
     this.fabricStub = middlewareChain.fabricStub();
     this.registry = new Registry(middlewareChain.getFirst());
+  }
+
+  /**
+   * Gets the Identity wrapper, lazily instantiating it on the first call.
+   *
+   * @return the Identity wrapper singleton associated with this context
+   */
+  public Identity getIdentity() {
+    if (this.identity == null) {
+      this.identity = new Identity(this.middlewareChain.getFirst());
+    }
+    return this.identity;
   }
 
   /**

@@ -29,6 +29,7 @@ dependencies {
   implementation("com.jcabi:jcabi-aspects:0.26.0")
   implementation("org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.0")
   implementation("org.hyperledger.fabric:fabric-protos:0.3.0")
+  implementation("org.json:json:20231013")
 
   aspect("com.jcabi:jcabi-aspects:0.26.0")
 
